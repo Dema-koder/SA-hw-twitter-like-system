@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  message-service:
+    build:
+      context: ./message-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - user-service
+    networks:
+      - app-network
+
+  like-service:
+    build:
+      context: ./like-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - user-service
+      - message-service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
